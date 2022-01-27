@@ -1,62 +1,19 @@
-@Library('javahome-libs') _
+node{
+// demo
+   stage('SCM Checkout'){
+     git branch: 'maven', url: 'https://github.com/vikash-kumar01/CICD_Java_gradle_application.git'
+   }
+   stage('Compile-Package'){
+      // Get maven home path
+      def mvnHome =  tool name: 'maven-5', type: 'maven'   
+      sh "${mvnHome}/bin/mvn package"
+   }
+   
+   stage('SonarQube Analysis') {
+        def mvnHome =  tool name: 'maven-5', type: 'maven'
+        withSonarQubeEnv('sonarserver') { 
+          sh "${mvnHome}/bin/mvn sonar:sonar"
+        }
+    }
 
-pipeline{
-    agent any
-    options {
-      timeout(30)
-    }
-    stages{
-        
-        stage('Maven and Sonar'){
-            
-            parallel{
-            stage('Sonar Analysis'){
-                steps{
-                    withSonarQubeEnv('sonar7') {
-                        sh 'mvn sonar:sonar'
-                    }
-                    
-                    timeout(time: 1, unit: 'HOURS') {
-                        script{
-                          def qg = waitForQualityGate()
-                          if (qg.status != 'OK') {
-                              error "Pipeline aborted due to quality gate failure: ${qg.status}"
-                          }
-                        }
-                  }
-                }
-            }
-            
-             stage('Mvn Build'){
-                steps{
-                    sh 'mvn clean package'
-                }
-            }
-        
-     
-        }
-        
-        }
-        // stage("Nexus Deploy"){
-        //     steps{
-        //         script{
-        //             def pomFile = readMavenPom file: 'pom.xml'
-        //             nexusArtifactUploader artifacts: [[artifactId: 'myweb', classifier: '', file: "target/myweb-${pomFile.version}.war", type: 'war']], 
-        //                               credentialsId: 'nexus3', 
-        //                               groupId: 'in.javahome', 
-        //                               nexusUrl: '172.31.71.247:8081', 
-        //                               nexusVersion: 'nexus3', 
-        //                               protocol: 'http', repository: 'javahome-my-app', 
-        //                               version: pomFile.version
-        //         }
-        //     }
-        // }
-          
-        // stage('Tomcat Deploy'){
-        //     steps{
-        //         tomcatDeploy("172.31.35.55","ec2-user","myweb")
-        //     }
-        // }
-     
-    }
 }
