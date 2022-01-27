@@ -7,7 +7,10 @@
 	<version>0.0.6</version>
 	<name>my-app</name>
 	<url>http://maven.apache.org</url>
-
+    <properties>
+    <maven.compiler.source>14</maven.compiler.source>
+    <maven.compiler.target>14</maven.compiler.target>
+    </properties>
 	<dependencies>
 		<dependency>
 			<groupId>javax.servlet</groupId>
