@@ -1,7 +1,7 @@
 node{
 // demo
    stage('SCM Checkout'){
-     git 'https://github.com/javahometech/my-app'
+     git branch: 'maven', url: 'https://github.com/vikash-kumar01/CICD_Java_gradle_application.git'
    }
    stage('Compile-Package'){
       // Get maven home path
