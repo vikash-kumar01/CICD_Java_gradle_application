@@ -4,6 +4,10 @@
 	<groupId>in.javahome</groupId>
 	<artifactId>myweb</artifactId>
 	<packaging>war</packaging>
+	<properties>
+         <maven.compiler.source>1.6</maven.compiler.source>
+         <maven.compiler.target>1.6</maven.compiler.target>
+    </properties>
 	<version>3.5.1</version>
 	<name>my-app</name>
 	<url>http://maven.apache.org</url>
